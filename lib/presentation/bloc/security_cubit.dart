@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bank_cyber_demo/data/api/dio_client.dart';
 import 'package:bank_cyber_demo/domain/models/security_status.dart';
-import 'package:dio/dio.dart';
 
 abstract class SecurityState {}
 
