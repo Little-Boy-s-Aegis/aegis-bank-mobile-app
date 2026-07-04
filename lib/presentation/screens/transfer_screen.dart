@@ -29,20 +29,55 @@ class _TransferScreenState extends State<TransferScreen> {
   }
 
   Future<void> _executeTransfer() async {
+    final String finalSource = _sourceAccountController.text.trim();
+    final String finalTarget = _targetAccountController.text.trim();
+    final double? amount = double.tryParse(_amountController.text);
+    final String finalDescription = _descriptionController.text.trim();
+
     setState(() {
       _isLoading = true;
       _error = '';
       _success = '';
     });
 
-    final registry = Provider.of<RepositoryRegistry>(context, listen: false);
+    // 1. Recipient account format validation
+    final RegExp accRegex = RegExp(r'^ACC-\d{6}$');
+    if (!accRegex.hasMatch(finalTarget)) {
+      setState(() {
+        _error = "Recipient account must be in ACC-XXXXXX format (e.g., ACC-123456).";
+        _isLoading = false;
+      });
+      return;
+    }
 
-    // Validate inputs locally
-    final double? amount = double.tryParse(_amountController.text);
-    final String finalSource = _sourceAccountController.text.trim();
-    final String finalTarget = _targetAccountController.text.trim();
-    final double finalAmount = amount ?? 0.0;
-    final String finalDescription = _descriptionController.text.trim();
+    if (finalSource == finalTarget) {
+      setState(() {
+        _error = "Source and recipient account numbers must be different.";
+        _isLoading = false;
+      });
+      return;
+    }
+
+    // 2. Positive amount validation
+    if (amount == null || amount <= 0) {
+      setState(() {
+        _error = "Transfer amount must be a valid positive number greater than zero.";
+        _isLoading = false;
+      });
+      return;
+    }
+
+    // 3. Description validation
+    if (finalDescription.isEmpty) {
+      setState(() {
+        _error = "Description message is required.";
+        _isLoading = false;
+      });
+      return;
+    }
+
+    final double finalAmount = amount;
+    final registry = Provider.of<RepositoryRegistry>(context, listen: false);
 
     try {
       await registry.transactionRepository.transferMoney(
