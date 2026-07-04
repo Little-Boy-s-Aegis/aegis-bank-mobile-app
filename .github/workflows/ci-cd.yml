@@ -34,7 +34,9 @@ jobs:
       run: flutter pub get
 
     - name: Create Flutter Platform Files
-      run: flutter create --platforms=android .
+      run: |
+        flutter create --platforms=android .
+        rm -f test/widget_test.dart
 
     - name: Add Android Internet Permission
       run: |
