@@ -1,0 +1,67 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate.json
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The Python Packaging Index
+dist/
+build/
+
+# Flutter/Dart/Pub related
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# Android related
+**/android/local.properties
+**/android/key.properties
+**/android/app/local.properties
+**/android/app/generated_light_theme_attributes.xml
+**/android/app/flutter_bootstrap.properties
+**/android/app/flutter_settings_properties.json
+*.keystore
+*.jks
+
+# iOS related
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/flutter_development_environment.sh
+**/ios/Flutter/ephemeral/
+**/ios/.symlinks/
+**/ios/Pods/
+**/ios/build/
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/DerivedData/
+
+# macOS related
+**/macos/Flutter/ephemeral/
+**/macos/Flutter/Generated.xcconfig
+**/macos/Flutter/flutter_export_environment.sh
+**/macos/.symlinks/
+**/macos/Pods/
+**/macos/build/
+
+# Web related
+lib/generated_plugin_registrant.dart
+
+# VS Code related
+.vscode/
