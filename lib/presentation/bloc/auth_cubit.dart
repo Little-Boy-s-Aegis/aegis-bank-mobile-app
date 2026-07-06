@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bank_cyber_demo/data/repositories/auth_repository.dart';
 import 'package:bank_cyber_demo/domain/models/user.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:bank_cyber_demo/data/secure_storage.dart';
 
 abstract class AuthState {}
 
@@ -27,14 +27,13 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> checkSession() async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token');
+    final token = await SecureStorage.read('token');
     if (token != null) {
-      final username = prefs.getString('user_username') ?? '';
-      final fullName = prefs.getString('user_fullname') ?? '';
-      final email = prefs.getString('user_email') ?? '';
-      final role = prefs.getString('user_role') ?? 'USER';
-      final accountNumber = prefs.getString('user_account') ?? '';
+      final username = await SecureStorage.read('user_username') ?? '';
+      final fullName = await SecureStorage.read('user_fullname') ?? '';
+      final email = await SecureStorage.read('user_email') ?? '';
+      final role = await SecureStorage.read('user_role') ?? 'USER';
+      final accountNumber = await SecureStorage.read('user_account') ?? '';
       
       emit(AuthSuccess(User(
         id: 0,
@@ -68,13 +67,12 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token');
-    await prefs.remove('user_username');
-    await prefs.remove('user_fullname');
-    await prefs.remove('user_email');
-    await prefs.remove('user_role');
-    await prefs.remove('user_account');
+    await SecureStorage.delete('token');
+    await SecureStorage.delete('user_username');
+    await SecureStorage.delete('user_fullname');
+    await SecureStorage.delete('user_email');
+    await SecureStorage.delete('user_role');
+    await SecureStorage.delete('user_account');
     emit(AuthInitial());
   }
 }

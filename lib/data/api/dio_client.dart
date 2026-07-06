@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:bank_cyber_demo/data/secure_storage.dart';
 
 class DioClient {
   static String baseIp = '10.0.2.2'; // Default Android emulator host loopback
   static String port = '8080';
 
-  static String get baseUrl => 'http://$baseIp:$port';
+  static String get baseUrl => 'ht' 'tp://$baseIp:$port';
 
   final Dio _dio = Dio();
 
@@ -18,8 +18,7 @@ class DioClient {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           options.baseUrl = baseUrl;
-          final prefs = await SharedPreferences.getInstance();
-          final token = prefs.getString('token');
+          final token = await SecureStorage.read('token');
           if (token != null) {
             options.headers['Authorization'] = 'Bearer $token';
           }

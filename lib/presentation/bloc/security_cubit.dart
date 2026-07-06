@@ -34,7 +34,7 @@ class SecurityCubit extends Cubit<SecurityState> {
     }
   }
 
-  Future<void> toggleSetting(String vulnerability, bool enabled) async {
+  Future<void> changeShieldState(String vulnerability, bool enabled) async {
     try {
       await _dioClient.dio.post('/api/admin/security/toggle', data: {
         'vulnerability': vulnerability.toUpperCase(),

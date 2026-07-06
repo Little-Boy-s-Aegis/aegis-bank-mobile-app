@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:bank_cyber_demo/data/api/dio_client.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:bank_cyber_demo/data/secure_storage.dart';
 import 'auth_repository.dart';
 import 'account_repository.dart';
 import 'transaction_repository.dart';
@@ -19,10 +19,9 @@ class RepositoryRegistry extends ChangeNotifier {
   }
 
   Future<void> _initMode() async {
-    final prefs = await SharedPreferences.getInstance();
-    _useMock = prefs.getBool('use_mock') ?? true;
-    DioClient.baseIp = prefs.getString('server_ip') ?? '10.0.2.2';
-    DioClient.port = prefs.getString('server_port') ?? '8080';
+    _useMock = await SecureStorage.readBool('use_mock') ?? true;
+    DioClient.baseIp = await SecureStorage.read('server_ip') ?? '10.0.2.2';
+    DioClient.port = await SecureStorage.read('server_port') ?? '8080';
     _updateRepositories();
   }
 
@@ -34,8 +33,7 @@ class RepositoryRegistry extends ChangeNotifier {
 
   Future<void> toggleMockMode(bool value) async {
     _useMock = value;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('use_mock', value);
+    await SecureStorage.writeBool('use_mock', value);
     _updateRepositories();
     notifyListeners();
   }
@@ -43,9 +41,8 @@ class RepositoryRegistry extends ChangeNotifier {
   Future<void> updateServerConfig(String ip, String portStr) async {
     DioClient.baseIp = ip;
     DioClient.port = portStr;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('server_ip', ip);
-    await prefs.setString('server_port', portStr);
+    await SecureStorage.write('server_ip', ip);
+    await SecureStorage.write('server_port', portStr);
     _updateRepositories();
     notifyListeners();
   }
