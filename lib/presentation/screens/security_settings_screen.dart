@@ -177,7 +177,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
 
               // Remote Security Configuration control switches (Connected to backend)
               const Text(
-                'REMOTE VULNERABILITY TOGGLES (SPRING BOOT)',
+                'REMOTE SECURITY CONFIGURATIONS (SPRING BOOT)',
                 style: TextStyle(color: Color(0xFF228B22), fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5),
               ),
               const SizedBox(height: 12),
@@ -248,7 +248,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
           Switch(
             value: active,
             onChanged: (val) {
-              context.read<SecurityCubit>().toggleSetting(key, val);
+              context.read<SecurityCubit>().changeShieldState(key, val);
             },
             activeColor: Colors.roseAccent,
           )
