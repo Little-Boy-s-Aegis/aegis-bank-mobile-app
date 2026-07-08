@@ -70,3 +70,12 @@ Generates the iOS runner build (requires macOS and Xcode):
 ```bash
 flutter build ipa --release
 ```
+
+---
+
+## 🔒 Security Hardening & Config Updates
+
+* **Encrypted Storage Migration**: Upgraded mobile session cache and local repository from plaintext `SharedPreferences` to `flutter_secure_storage`. This encrypts user credentials, JWT access tokens, and vulnerability controls at rest.
+* **Obfuscated Toggles & Credentials**: Inlined mock credentials and control flags are obfuscated to prevent reverse-engineering extraction.
+* **Dynamic Network Setup**: Replaced static compile-time IP constants with static variables initialized at launch, enabling dynamic, real-time updates to backend API endpoints (`baseIp` and `port`) in the Repository Provider settings.
+
