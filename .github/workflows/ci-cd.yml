@@ -33,27 +33,8 @@ jobs:
     - name: Get Dependencies
       run: flutter pub get
 
-    - name: Create Flutter Platform Files
-      run: |
-        flutter create --platforms=android .
-        rm -f test/widget_test.dart
-
-    - name: Add Android Internet Permission
-      run: |
-        python -c "
-        import os
-        path = 'android/app/src/main/AndroidManifest.xml'
-        if os.path.exists(path):
-            with open(path, 'r') as f:
-                content = f.read()
-            if 'android.permission.INTERNET' not in content:
-                content = content.replace('<application', '<uses-permission android:name=\"android.permission.INTERNET\"/>\n    <application')
-                with open(path, 'w') as f:
-                    f.write(content)
-                print('Successfully added INTERNET permission to AndroidManifest.xml')
-        else:
-            print('AndroidManifest.xml not found!')
-        "
+    - name: Verify Android Platform Files
+      run: test -f android/app/build.gradle.kts && test -f android/app/src/main/AndroidManifest.xml
 
     - name: Run Flutter Static Analysis
       run: flutter analyze
